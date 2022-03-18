@@ -1,18 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
-import { CommissionModule } from '../src/commission/commission.module';
 import { CommissionDto } from '../src/commission/dto/commission.dto';
+import { AppModule } from '../src/app.module';
 
 describe('CommissionController (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [CommissionModule],
+      imports: [AppModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe({ transform: true }));
     await app.init();
   });
 
@@ -20,13 +21,13 @@ describe('CommissionController (e2e)', () => {
     it('should use HighTurnover rule', () => {
       const requestDto = {
         date: '2021-01-01',
-        amount: 1000.0,
+        amount: '1000.0',
         currency: 'EUR',
         client_id: 1,
       };
 
       const res: CommissionDto = {
-        amount: 0.03,
+        amount: '0.03',
         currency: 'EUR',
       };
 
@@ -41,7 +42,7 @@ describe('CommissionController (e2e)', () => {
 
     it('should return 400', () => {
       const requestDto = {
-        date: '2021-01-01',
+        date: new Date('2021-01-01'),
         amount: 1000.0,
         client_id: 1,
       };
@@ -53,5 +54,9 @@ describe('CommissionController (e2e)', () => {
         .expect('Content-Type', /json/)
         .expect(400);
     });
+  });
+
+  afterEach(async () => {
+    await app.close();
   });
 });

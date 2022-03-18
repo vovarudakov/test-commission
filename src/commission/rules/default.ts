@@ -1,13 +1,15 @@
+import { Injectable } from '@nestjs/common';
 import { TransactionInfoDto } from './dto/transaction-info.dto';
 import { RuleInterface } from './interfaces/rule.interface';
-import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class Default implements RuleInterface {
   private readonly DEFAULT_PERCENT = 0.5;
   private readonly MIN_COMMISSION = 0.05;
 
-  async isApplicable(transactionInfoDto: TransactionInfoDto): Promise<boolean> {
+  async isApplicable(
+    _transactionInfoDto: TransactionInfoDto,
+  ): Promise<boolean> {
     return true;
   }
 

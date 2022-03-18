@@ -1,5 +1,5 @@
 {
-  "name": "kevin-test",
+  "name": "test-commission",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -14,19 +14,22 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "MAIN_CURRENCY_CODE=EUR jest",
-    "test:watch": "MAIN_CURRENCY_CODE=EUR jest --watch",
-    "test:cov": "MAIN_CURRENCY_CODE=EUR jest --coverage",
-    "test:debug": "MAIN_CURRENCY_CODE=EUR node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "MAIN_CURRENCY_CODE=EUR jest --config ./test/jest-e2e.json"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs/axios": "0.0.7",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^1.2.0",
     "@nestjs/core": "^8.0.0",
+    "@nestjs/mongoose": "^9.0.3",
     "@nestjs/platform-express": "^8.0.0",
-    "nest-csv-parser": "^2.0.4",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.13.2",
+    "mongoose": "^6.2.7",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"

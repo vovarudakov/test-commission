@@ -1,7 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { CommissionController } from './commission.controller';
 import { CommissionCalculatorService } from './commission-calculator.service';
-import { CommissionModule } from './commission.module';
 import { TransactionService } from '../transaction/transaction.service';
 import { RequestConverterService } from './transaction/request-converter.service';
 import { ConfigService } from '@nestjs/config';
@@ -44,13 +43,13 @@ describe('CommissionController', () => {
   describe('calculate', () => {
     it('should return commission', async () => {
       const req = {
-        date: '2021-01-01',
+        date: new Date('2021-01-01'),
         client_id: 1,
-        amount: 0.03,
+        amount: 1000.0,
         currency: 'EUR',
       };
       const result = {
-        amount: 0.03,
+        amount: '0.03',
         currency: 'EUR',
       };
       jest

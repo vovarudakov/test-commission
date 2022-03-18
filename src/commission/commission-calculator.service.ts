@@ -33,11 +33,13 @@ export class CommissionCalculatorService {
 
     await Promise.all(commissionPromises);
 
-    const min = commissions.reduce((prev, cur) => (prev < cur ? prev : cur));
-
     return {
-      amount: min,
+      amount: this.findMin(commissions).toString(),
       currency: this.configService.get<string>('MAIN_CURRENCY_CODE'),
     };
+  }
+
+  private findMin(array: Array<number>): number {
+    return array.reduce((prev, cur) => (prev < cur ? prev : cur));
   }
 }

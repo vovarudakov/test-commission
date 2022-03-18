@@ -1,15 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { TransactionRequestDto } from '../dto/transaction-request.dto';
-import { TransactionInfoDto } from '../rules/dto/transaction-info.dto';
+import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
+import { TransactionRequestDto } from '../dto/transaction-request.dto';
+import { TransactionInfoDto } from '../rules/dto/transaction-info.dto';
 import { Rates } from './types';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class RequestConverterService {
-  private readonly RATES_URL = 'https://api.exchangerate.host/2021-01-01';
-
   constructor(
     private configService: ConfigService,
     private httpService: HttpService,
@@ -18,7 +16,7 @@ export class RequestConverterService {
   async convert(
     transactionRequestDto: TransactionRequestDto,
   ): Promise<TransactionInfoDto> {
-    const transactionInfo = {
+    const transactionInfo: TransactionInfoDto = {
       client_id: transactionRequestDto.client_id,
       date: transactionRequestDto.date,
       amount: transactionRequestDto.amount,
@@ -32,7 +30,9 @@ export class RequestConverterService {
     }
 
     const response = await firstValueFrom(
-      this.httpService.get(this.RATES_URL),
+      this.httpService.get(
+        this.configService.get<string>('EXCHANGE_SERVICE_URL'),
+      ),
     ).catch(() => {
       throw new HttpException(
         'Exchange service is unavailable',

@@ -11,30 +11,16 @@ export class HighTurnover implements RuleInterface {
   constructor(private readonly transactionService: TransactionService) {}
 
   async isApplicable(transactionInfoDto: TransactionInfoDto): Promise<boolean> {
-    const [_, transactionMonth] = transactionInfoDto.date.split('-'),
-      transactions = await this.transactionService.getAll();
+    const totalPerMonth = await this.transactionService.getTotalPerMonth(
+      transactionInfoDto.client_id,
+      transactionInfoDto.date.getMonth() + 1,
+    );
 
-    const filtered = transactions.filter((t) => {
-      const [_, month] = t.date.split('-');
-      return (
-        +transactionMonth === +month &&
-        +t.client_id === +transactionInfoDto.client_id
-      );
-    });
-
-    if (filtered.length === 0) {
-      return false;
-    }
-
-    const curMonthTotal = filtered.reduce((prev, cur) => {
-      return { ...cur, amount: +prev.amount + +cur.amount };
-    });
-
-    return curMonthTotal.amount >= this.TOTAL_THRESHOLD;
+    return totalPerMonth >= this.TOTAL_THRESHOLD;
   }
 
   async calculateCommission(
-    transactionInfoDto: TransactionInfoDto,
+    _transactionInfoDto: TransactionInfoDto,
   ): Promise<number> {
     return this.COMMISSION;
   }

@@ -1,9 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
-import { CsvModule } from 'nest-csv-parser';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Transaction, TransactionSchema } from './schemas/transaction.schema';
 
 @Module({
-  imports: [CsvModule],
+  imports: [
+    MongooseModule.forFeature([
+      { name: Transaction.name, schema: TransactionSchema },
+    ]),
+  ],
   providers: [TransactionService],
   exports: [TransactionService],
 })

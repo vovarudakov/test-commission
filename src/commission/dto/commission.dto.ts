@@ -1,4 +1,4 @@
 export class CommissionDto {
-  readonly amount: number;
+  readonly amount: string;
   readonly currency: string;
 }

@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { CommissionCalculatorService } from './commission-calculator.service';
 import { CommissionController } from './commission.controller';
 import { TransactionModule } from '../transaction/transaction.module';
-import { HighTurnover } from './rules/high.turnover';
+import { HighTurnover } from './rules/high-turnover';
 import { Default } from './rules/default';
-import { Client42 } from './rules/client42';
+import { ClientWithDiscount } from './rules/client-with-discount';
 import { RequestConverterService } from './transaction/request-converter.service';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
@@ -16,7 +16,7 @@ import { ConfigModule } from '@nestjs/config';
     RequestConverterService,
     HighTurnover,
     Default,
-    Client42,
+    ClientWithDiscount,
     {
       provide: 'Rules',
       useFactory: (HighTurnover, Default, Client42) => [
@@ -24,7 +24,7 @@ import { ConfigModule } from '@nestjs/config';
         Default,
         Client42,
       ],
-      inject: [HighTurnover, Default, Client42],
+      inject: [HighTurnover, Default, ClientWithDiscount],
     },
   ],
   controllers: [CommissionController],

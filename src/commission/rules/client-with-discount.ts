@@ -1,9 +1,9 @@
+import { Injectable } from '@nestjs/common';
 import { TransactionInfoDto } from './dto/transaction-info.dto';
 import { RuleInterface } from './interfaces/rule.interface';
-import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class Client42 implements RuleInterface {
+export class ClientWithDiscount implements RuleInterface {
   private readonly CLIENT_ID = 42;
   private readonly COMMISSION = 0.05;
 
@@ -12,7 +12,7 @@ export class Client42 implements RuleInterface {
   }
 
   async calculateCommission(
-    transactionInfoDto: TransactionInfoDto,
+    _transactionInfoDto: TransactionInfoDto,
   ): Promise<number> {
     return this.COMMISSION;
   }
